@@ -18,6 +18,12 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
+/* User-interaction routes */
 Route::group(["prefix" => "v1"], function() {
     Route::post('create-user', 'UserController@createUser');
+});
+
+/* Post-interaction routes */
+Route::group(["prefix" => "v1"], function () {
+    Route::post('create-post', 'PostController@createPost');
 });

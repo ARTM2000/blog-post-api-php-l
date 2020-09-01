@@ -15,7 +15,7 @@ class UserController extends Controller
             "email" => ["email", "required"],
             "password" => ["min:8", "required"]
         ]);
-        
+
         $newUser = new User;
         $newUser->name = $req->name;
         $newUser->email = $req->email;
@@ -25,12 +25,14 @@ class UserController extends Controller
         if($result) {
             return response()->json([
                     "message" => "User created",
+                    "error" => false,
                     "status" => 200,
                     "user" => $newUser
                 ]);
         } else {
             return response()->json([
                     "message" => "User creation failed",
+                    "error" => true,
                     "status" => 500
             ]);
         }
