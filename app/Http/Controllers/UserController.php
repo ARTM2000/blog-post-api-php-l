@@ -23,18 +23,17 @@ class UserController extends Controller
             
         $result = $newUser->save();
         if($result) {
-            return response()->json([
+            return onResponse([
                     "message" => "User created",
                     "error" => false,
                     "status" => 200,
-                    "user" => $newUser
-                ]);
+            ], $newUser);
         } else {
-            return response()->json([
+            return onResponse([
                     "message" => "User creation failed",
                     "error" => true,
                     "status" => 500
-            ]);
+            ], []);
         }
     }
 
@@ -45,23 +44,26 @@ class UserController extends Controller
         ]);
 
         $userId = $req->userId;
+
         $user = User::find($userId);
-        $posts = $user->posts;
-        if ($posts) {
-            return response()->json([
-                "data" => $posts,
-                "message" => "Posts sent",
-                "status" => 200,
-                "error" => false
-            ]);
+
+        if ($user != null) {
+            $posts = $user->posts;
+            return onResponse(
+                [
+                    "message" => "Posts sent",
+                    "status" => 200,
+                    "error" => false
+                ], $posts);
         } else {
-            return response()->json([
-                "message" => "Posts not found",
-                "status" => 404,
-                "error" => false
-            ]);
+            return onResponse(
+                [
+                    "message" => "user id is not exist",
+                    "status" => 404,
+                    "error" => false
+                ], []);
         }
     }
 
-    
+
 }

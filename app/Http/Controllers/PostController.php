@@ -24,18 +24,18 @@ class PostController extends Controller
         $result = $newPost->save();
         if($result) {
             //on success
-            return response()->json([
-                    "message" => "Post created",
-                    "error" => false,
-                    "status" => 200,
-                ]);
+            return onResponse([
+                "message" => "Post created",
+                "error" => false,
+                "status" => 200,
+            ], $newPost);
         } else {
             //on failure
-            return response()->json([
+            return onResponse([
                     "message" => "Post creation failed",
                     "error" => true,
                     "status" => 500,
-                ]);
+            ], []);
         }
     }
 }
