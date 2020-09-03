@@ -52,8 +52,12 @@ class PostController extends Controller
         // dd($post);
         if(!empty($post)) {
             if(strlen($req->title.$req->content) > 0) {
-                $post->title = $req->title;
-                $post->content = $req->content;
+                if(strlen($req->title) > 0) {
+                    $post->title = $req->title;
+                }
+                if(strlen($req->content) > 0) {
+                    $post->content = $req->content;
+                }
                 $post->save();
 
                 return onResponse([
@@ -76,4 +80,6 @@ class PostController extends Controller
                 ], []);
         }
     }
+
+
 }
