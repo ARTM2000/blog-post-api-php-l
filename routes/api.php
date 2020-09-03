@@ -21,7 +21,10 @@ use Illuminate\Support\Facades\Route;
 /* User-interaction routes */
 Route::group(["prefix" => "v1"], function() {
     
+    //creating new user
     Route::post('create-user', 'UserController@createUser');
+    //verify new user
+    Route::post('login', "UserController@verifyUser");
 
     // Get user's posts
     Route::post('user-post', 'UserController@getUserPost');

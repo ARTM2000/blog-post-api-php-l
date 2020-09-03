@@ -19,7 +19,8 @@ class UserController extends Controller
         $newUser = new User;
         $newUser->name = $req->name;
         $newUser->email = $req->email;
-        $newUser->password = $req->password;
+        $userPassword = password_hash($req->password, PASSWORD_DEFAULT);
+        $newUser->password = $userPassword;
             
         $result = $newUser->save();
         if($result) {
@@ -34,6 +35,35 @@ class UserController extends Controller
                     "error" => true,
                     "status" => 500
             ], []);
+        }
+    }
+
+    //Verify user for login
+    public function verifyUser(Request $req)    
+    {
+        $this->validate($req, [
+            "email" => ["email", "required"],
+            "password" => ["min:8", "required"]
+        ]);
+
+        $user = User::where("email", $req->email)->first();
+        // dd($user->email);
+        if(password_verify($req->password, $user->password)) {
+            return onResponse([
+                    "message" => "User verified",
+                    "error" => false,
+                    "status" => 200
+            ], [
+                "userId" => $user->id,
+                "name" => $user->name
+            ]);
+        } else {
+            return onResponse([
+                    "message" => "User verification failed",
+                    "error" => true,
+                    "errorMessage" => ["Password is not correct"],
+                    "status" => 403
+            ], []);  
         }
     }
 
