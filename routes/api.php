@@ -32,5 +32,9 @@ Route::group(["prefix" => "v1"], function() {
 
 /* Post-interaction routes */
 Route::group(["prefix" => "v1"], function () {
+    
+    //creating new post
     Route::post('create-post', 'PostController@createPost');
+    //update post
+    Route::post('update-post', "PostController@updatePost");
 });

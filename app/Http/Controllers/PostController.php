@@ -38,4 +38,42 @@ class PostController extends Controller
             ], []);
         }
     }
+
+    //updating post
+    public function updatePost(Request $req)
+    {
+        $this->validate($req, [
+            "postId" => ["required", "numeric"],
+            "userId" => ["required", "numeric"]
+        ]);
+
+        //request should have "title" and "content", but it's not necessary.
+        $post = Post::where("id", $req->postId)->where("user_id", $req->userId)->first();
+        // dd($post);
+        if(!empty($post)) {
+            if(strlen($req->title.$req->content) > 0) {
+                $post->title = $req->title;
+                $post->content = $req->content;
+                $post->save();
+
+                return onResponse([
+                    "message" => "Post updated",
+                    "error" => false,
+                    "status" => 200
+                ], $post);
+            } else {
+                return onResponse([
+                    "message" => "No title and content received",
+                    "error" => true,
+                    "status" => 402
+                ], []);
+            }
+        } else {
+            return onResponse([
+                    "message" => "This post does not exist",
+                    "error" => true,
+                    "status" => 404
+                ], []);
+        }
+    }
 }
